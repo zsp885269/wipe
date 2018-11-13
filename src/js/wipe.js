@@ -72,7 +72,7 @@ cas.addEventListener(clickEvtName,function(evt){
 	moveY = device ? event.touches[0].clientY : event.clientY;
 	// drawPoint(context,moveX,moveY);
 	drawhe(context,moveX,moveY);
-},false)
+},false);
 cas.addEventListener(moveEvtName,function(evt){
 	//判断，当isMouseDown为true时，才执行下面的操作
 	if (!isMouseDown) {
@@ -88,7 +88,7 @@ cas.addEventListener(moveEvtName,function(evt){
 		moveX = x2;
 		moveY = y2;
 	}
-},false)
+},false);
 //为画布添加手势操作--手指点击响应
 // cas.addEventListener("touchstart",function(evt){
 // 	isMouseDown = true;
