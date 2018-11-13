@@ -21,25 +21,48 @@ function drawMask(context){
 	context.globalCompositeOperation ="destination-out";
 }
 //在画布上
-function drawPoint(context,left,top){
-	// console.log("传递的实参个数"+arguments.length);
-	context.save();
-	context.beginPath();
-	context.arc(left,top,raduis,0,2*Math.PI);
-	context.strokeStyle = "red";
-	context.fill();
-	context.restore();
-}
-// 划线
-function drawLine(context,moveX,moveY,x2,y2){
-	// console.log("传递的实参个数"+arguments.length);
-	context.save();
-	context.beginPath();
-	context.lineWidth = raduis*2;
-	context.moveTo(moveX,moveY);
-	context.lineTo(x2,y2);
-	context.stroke();
-	context.restore();
+// function drawPoint(context,moveX,moveY){
+// 	// console.log("传递的实参个数"+arguments.length);
+// 	context.save();
+// 	context.beginPath();
+// 	context.arc(moveX,moveY,raduis,0,2*Math.PI);
+// 	context.strokeStyle = "red";
+// 	context.fill();
+// 	context.restore();
+// }
+//划线
+// function drawLine(context,moveX,moveY,x2,y2){
+// 	// console.log("传递的实参个数"+arguments.length);
+// 	context.save();
+// 	context.beginPath();
+// 	context.lineWidth = raduis*2;
+// 	context.moveTo(moveX,moveY);
+// 	context.lineTo(x2,y2);
+// 	context.stroke();
+// 	context.restore();
+// }
+//划线和圆角并用
+function drawhe(context,moveX,moveY,x2,y2){
+	console.log("传递的实参个数"+arguments.length);
+	if(arguments.length === 3){
+		context.save();
+		context.beginPath();
+		context.arc(moveX,moveY,raduis,0,2*Math.PI);
+		context.strokeStyle = "red";
+		context.fill();
+		context.restore();
+	}else if(arguments.length === 5){
+		context.save();
+		context.lineCap = "round";
+		context.lineWidth = raduis*2;
+		context.beginPath();
+		context.moveTo(moveX,moveY);
+		context.lineTo(x2,y2);
+		context.stroke();
+		context.restore();
+	}else{
+		return false;
+	}
 }
 cas.addEventListener(clickEvtName,function(evt){
 	isMouseDown = true;
@@ -47,7 +70,8 @@ cas.addEventListener(clickEvtName,function(evt){
 	//获取鼠标咋视口的坐标，传递参数打drawPoint
 	moveX = device ? event.touches[0].clientX : event.clientX;
 	moveY = device ? event.touches[0].clientY : event.clientY;
-	drawPoint(context,moveX,moveY);
+	// drawPoint(context,moveX,moveY);
+	drawhe(context,moveX,moveY);
 },false)
 cas.addEventListener(moveEvtName,function(evt){
 	//判断，当isMouseDown为true时，才执行下面的操作
@@ -58,7 +82,8 @@ cas.addEventListener(moveEvtName,function(evt){
 		event.preventDefault();
 		x2 = device ? event.touches[0].clientX:event.clientX;
 		y2 = device ? event.touches[0].clientY:event.clientY;
-		drawLine(context,moveX,moveY,x2,y2);
+		drawhe(context,moveX,moveY,x2,y2);
+		// drawLine(context,moveX,moveY,x2,y2);
 		//每一次的结束点变成下一次划线的开始点
 		moveX = x2;
 		moveY = y2;
