@@ -5,6 +5,13 @@ var raduis = 20;	//涂抹的半径
 var moveX;
 var moveY;
 var isMouseDown = false;//表示鼠标的状态，是否按下，默认为按下false，按下true
+//device保存设备类型，如果是移动端则为true，PC端为false
+var device = (/android|webos|iPhone|ipad|ipod|blackberry|iemobile|opera mini/i.test(navigator.userAgent.toLowerCase()));
+console.log(navigator.userAgent);
+console.log(device);
+var clickEvtName = device? "touchstart" : "mousedown";
+var moveEvtName = device? "touchmove" : "mousemove";
+var endEvtName = device? "touchend" : "mouseup";
 
 //生成画布上的遮罩，默认颜色#666
 function drawMask(context){
@@ -13,7 +20,9 @@ function drawMask(context){
 	context.fillRect(0,0,375,667);
 	context.globalCompositeOperation ="destination-out";
 }
+//在画布上
 function drawPoint(context,left,top){
+	// console.log("传递的实参个数"+arguments.length);
 	context.save();
 	context.beginPath();
 	context.arc(left,top,raduis,0,2*Math.PI);
@@ -21,7 +30,9 @@ function drawPoint(context,left,top){
 	context.fill();
 	context.restore();
 }
+// 划线
 function drawLine(context,moveX,moveY,x2,y2){
+	// console.log("传递的实参个数"+arguments.length);
 	context.save();
 	context.beginPath();
 	context.lineWidth = raduis*2;
@@ -30,31 +41,81 @@ function drawLine(context,moveX,moveY,x2,y2){
 	context.stroke();
 	context.restore();
 }
-//在canvas画布上监听在自定义事件"mousedown",调用drawPoint函数
-cas.addEventListener("mousedown",function(evt){
+cas.addEventListener(clickEvtName,function(evt){
 	isMouseDown = true;
 	var event = evt || window.event;
-	//获取鼠标在视口的坐标，传递参数到drawPoint
-	moveX = event.clientX;
-	moveY = event.clientY;
+	//获取鼠标咋视口的坐标，传递参数打drawPoint
+	moveX = device ? event.touches[0].clientX : event.clientX;
+	moveY = device ? event.touches[0].clientY : event.clientY;
 	drawPoint(context,moveX,moveY);
-},false);
-//增加监听"mousemove",调用draePoint函数
-cas.addEventListener("mousemove",fn1,false);
-function fn1(evt){
-	if (isMouseDown) {
+},false)
+cas.addEventListener(moveEvtName,function(evt){
+	//判断，当isMouseDown为true时，才执行下面的操作
+	if (!isMouseDown) {
+		return false;
+	}else{
 		var event = evt || window.event;
-		//获取鼠标在视口的坐标，传递参数到drawPoint
-		x2 = event.clientX;
-		y2 = event.clientY;
+		event.preventDefault();
+		x2 = device ? event.touches[0].clientX:event.clientX;
+		y2 = device ? event.touches[0].clientY:event.clientY;
 		drawLine(context,moveX,moveY,x2,y2);
+		//每一次的结束点变成下一次划线的开始点
 		moveX = x2;
 		moveY = y2;
 	}
-}
-cas.addEventListener("mouseup",function(){
+},false)
+//为画布添加手势操作--手指点击响应
+// cas.addEventListener("touchstart",function(evt){
+// 	isMouseDown = true;
+// 	var event = evt||window.event;
+// 	//获取手指在视口的坐标，传递参数到drawPoint
+// 	moveX = event.touches[0].clientX;
+// 	moveY = event.touches[0].clientY;
+// 	drawPoint(context,moveX,moveY);
+// },false)
+//手指移动
+// cas.addEventListener("touchmove",function(evt){
+// 	//判断，当isMouseDown为true时，才执行下面的操作
+// 	if (!isMouseDown) {
+// 		return false;
+// 	}else{
+// 		var event = evt || window.event;
+// 		event.preventDefault();
+// 		var x2 = event.touches[0].clientX;
+// 		var y2 = event.touches[0].clientY;
+// 		drawLine(context,moveX,moveY,x2,y2);
+// 		//每一次的结束点变成下一次划线的开始点
+// 		moveX = x2;
+// 		moveY = y2;
+// 	}
+// },false)
+//在canvas画布上监听在自定义事件"mousedown",调用drawPoint函数
+// cas.addEventListener("mousedown",function(evt){
+// 	isMouseDown = true;
+// 	var event = evt || window.event;
+// 	//获取鼠标在视口的坐标，传递参数到drawPoint
+// 	moveX = event.clientX;
+// 	moveY = event.clientY;
+// 	drawPoint(context,moveX,moveY);
+// },false);
+//增加监听"mousemove",调用draePoint函数
+// cas.addEventListener("mousemove",function(evt){
+// 	if (isMouseDown) {
+// 		var event = evt || window.event;
+// 		//获取鼠标在视口的坐标，传递参数到drawPoint
+// 		x2 = event.clientX;
+// 		y2 = event.clientY;
+// 		drawLine(context,moveX,moveY,x2,y2);
+// 		moveX = x2;
+// 		moveY = y2;
+// 	}
+// },false);
+cas.addEventListener(endEvtName,function(evt){
 	getTransparencyPercent(context);
-	},false);
+},false);
+// cas.addEventListener("mouseup",function(evt){
+// 	getTransparencyPercent(context);
+// },false);
 function getTransparencyPercent(context){
 	var num = 0;
 	var imgData = context.getImageData(0,0,_w,_h);
