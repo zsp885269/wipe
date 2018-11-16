@@ -80,8 +80,8 @@ cas.addEventListener(moveEvtName,function(evt){
 	}else{
 		var event = evt || window.event;
 		event.preventDefault();
-		x2 = device ? event.touches[0].clientX:event.clientX;
-		y2 = device ? event.touches[0].clientY:event.clientY;
+		var x2 = device ? event.touches[0].clientX:event.clientX;
+		var y2 = device ? event.touches[0].clientY:event.clientY;
 		drawhe(context,moveX,moveY,x2,y2);
 		// drawLine(context,moveX,moveY,x2,y2);
 		//每一次的结束点变成下一次划线的开始点
