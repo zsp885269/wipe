@@ -38,7 +38,7 @@ module.exports = function(grunt){
 			options:{
 				jshintrc:'.jshintrc'
 			}
-		},	
+		},
 		copy:{
 			js:{expand:true, cwd:'dist/js/', src:'*.min.js', dest:'sample/js/'}
 		},
@@ -46,16 +46,23 @@ module.exports = function(grunt){
 			example:{
 				src:['sample/index.html'],
 				overwrite:true,
-				replacements:[{
-					from:/\d[\.]\d[\.]\d/g,
-					to:'<%= pkg.version %>'
-				}]
+				replacements:[
+					{
+						from:/\d[\.]\d[\.]\d/g,
+						to:'<%= pkg.version %>'
+					},
+					//多个替换
+					{
+						from:/hello\.css/g,
+						to:'hello.min.css'
+					}
+				]
 			}
 		}
 	});
 	//告诉grunt需要使用插件
 	grunt.loadNpmTasks('grunt-contrib-uglify');
-	grunt.loadNpmTasks('grunt-contrib-cssmin');
+	// grunt.loadNpmTasks('grunt-contrib-cssmin');
 	grunt.loadNpmTasks('grunt-contrib-clean');
 	grunt.loadNpmTasks('grunt-contrib-jshint');
 	grunt.loadNpmTasks('grunt-contrib-copy');
