@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<meta http-equiv="Expires" content="0">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
 	<title>wipe 组件</title>
 	<style>
@@ -17,16 +16,30 @@
 			background: url(src/images/wipe1.jpg) center 0 no-repeat;
 			background-color: cover;
 		}
-		#cas{
-			border:1px solid red;
-			background: url(src/images/wi);
-		}
 	</style>
 </head>
 <body>
-	<canvas id="cas" width="375" height="667"></canvas>
-	<span>在主分支上的修改</span>
-	<div>在zsp01分支上的修改</div>
+	<canvas id="cas" width="375" height="700"></canvas>
 </body>
 </html>
 <script src="src/js/wipe.js"></script>
+<script>
+var wipeConfig = {
+	id:"cas",
+	coverType:"images",//取值类型color、image
+	color:"red",
+	imgUrl:"src/images/front.jpg",//前面的覆盖图
+	backImgUrl:"src/images/wipe2.jpg",//背景图片
+	width:375,	//canvas宽
+	height:700,	//canvas高
+	radius:20,		//涂抹笔的半径
+	transpercent:70,
+	callback:wipedCallback //用户自定义回调函数名称
+}
+var cas01 = new Wipe(wipeConfig);
+function wipedCallback(percent){
+	if (percent > 50) {
+		console.log("透明面积超过50%，查看地图");
+	}
+}
+</script>
