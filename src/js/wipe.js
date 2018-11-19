@@ -16,8 +16,8 @@ function Wipe(obj){
 	this._w = this.width;
 	this._h = this.height;
 	this.raduis = this.radius;	//涂抹的半径
-	this.moveX;
-	this.moveY;
+	this.moveX = this.moveX;
+	this.moveY = this.moveY;
 	this.isMouseDown = false;//表示鼠标的状态，是否按下，默认为按下false，按下true
 	this.callback = obj.callback;
 	this.transpercent = obj.transpercent;//用户定义的百分比
@@ -38,9 +38,9 @@ Wipe.prototype.drawMask=function(){
 		img1.onload = function(){
 			that.context.drawImage(img1,0,0,img1.width,img1.height,0,0,that._w,that._h);
 			that.context.globalCompositeOperation = "destination-out";
-		}
+		};
 	}
-}
+};
 //drawT画点和画线函数
 //参数：
 //如果只有两个参数,函数功能画圆,moveX,moveY即是圆的中心坐标
@@ -68,11 +68,11 @@ Wipe.prototype.drawT = function(moveX,moveY,x2,y2){
 	}else{
 		return false;
 	}
-}
+};
 //清除画布
 Wipe.prototype.clearRect = function(){
 	this.context.clearRect(0,0,this._w,this._h);
-}
+};
 //获取透明点占整个画布的百分比
 Wipe.prototype.getTransparencyPercent = function(){
 	var t = 0;
@@ -88,7 +88,7 @@ Wipe.prototype.getTransparencyPercent = function(){
 	console.log("占总面积" + Math.round(this.percent) + "%");
 	// return ((t / (_w * _h) )*100).toFixed(2);  //截取小数点两位
 	return Math.round(this.percent);
-}
+};
 Wipe.prototype.addEvent = function(){
 	//device保存设备类型，如果是移动端则为true，PC端为false
 	this.device = (/android|webos|iPhone|ipad|ipod|blackberry|iemobile|opera mini/i.test(navigator.userAgent.toLowerCase()));
@@ -133,5 +133,5 @@ Wipe.prototype.addEvent = function(){
 			that.clearRect();
 		}	
 	},false);
-}
+};
 
