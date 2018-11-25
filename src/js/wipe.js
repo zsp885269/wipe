@@ -96,24 +96,29 @@ Wipe.prototype.addEvent = function(){
 	var moveEvtName = this.device ? "touchmove" : "mousemove";
 	var endEvtName = this.device ? "touchend" : "mouseup";
 	var that = this;
+
 	this.cas.addEventListener(clickEvtName,function(evt){
+	var sTop = document.documentElement.scrollTop || document.body.scrollTop;
+	var sLeft = document.documentElement.scrollLeft || document.body.scrollLeft;
 		console.log("ok");
 		that.isMouseDown = true;
 		var event = evt || window.event;
 		//获取鼠标咋视口的坐标，传递参数打drawPoint
-		that.moveX = that.device ? event.touches[0].clientX : event.clientX;
-		that.moveY = that.device ? event.touches[0].clientY : event.clientY;
+		that.moveX = that.device ? event.touches[0].clientX-getAllLeft(this)+sLeft : event.clientX-getAllLeft(this)+sLeft;
+		that.moveY = that.device ? event.touches[0].clientY-getAllTop(this)+sTop : event.clientY-getAllTop(this)+sTop;
 		that.drawT(that.moveX,that.moveY);
 	},false);
 	this.cas.addEventListener(moveEvtName,function(evt){
+	var sTop = document.documentElement.scrollTop || document.body.scrollTop;
+	var sLeft = document.documentElement.scrollLeft || document.body.scrollLeft;
 		//判断，当isMouseDown为true时，才执行下面的操作
 		if (!that.isMouseDown) {
 			return false;
 		}else{
 			var event = evt || window.event;
 			event.preventDefault();
-			var x2 = that.device ? event.touches[0].clientX:event.clientX;
-			var y2 = that.device ? event.touches[0].clientY:event.clientY;
+			var x2 = that.device ? event.touches[0].clientX-getAllLeft(this)+sLeft : event.clientX-getAllLeft(this)+sLeft ;
+			var y2 = that.device ? event.touches[0].clientY-getAllTop(this)+sTop : event.clientY-getAllTop(this)+sTop;
 			that.drawT(that.moveX,that.moveY,x2,y2);
 			//每一次的结束点变成下一次划线的开始点
 			that.moveX = x2;
@@ -134,4 +139,22 @@ Wipe.prototype.addEvent = function(){
 		}	
 	},false);
 };
+// 封装一个getAllLeft()函数,找到元素所有水平方向的偏移
+	function getAllLeft(element){
+		var allLeft = 0;
+		while(element){
+			allLeft += element.offsetLeft;
+			element = element.offsetParent;
+		}
+		return allLeft;
+	}
+	function getAllTop(element){
+		var allTop = 0;
+		while(element){
+			allTop += element.offsetTop;
+			element = element.offsetParent;
+		}
+		// console.log(allTop);
+		return allTop;
+	}
 
