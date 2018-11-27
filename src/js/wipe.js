@@ -21,9 +21,9 @@ function Wipe(obj){
 	this.isMouseDown = false;//表示鼠标的状态，是否按下，默认为按下false，按下true
 	this.callback = obj.callback;
 	this.transpercent = obj.transpercent;//用户定义的百分比
+	this.wipetext = obj.wipetext;//用户自定义文字
 	this.drawMask();
 	this.addEvent();
-
 }
 //生成画布上的遮罩，默认为颜色#666
 Wipe.prototype.drawMask=function(){
@@ -37,8 +37,12 @@ Wipe.prototype.drawMask=function(){
 		img1.src = that.backImgUrl;
 		img1.onload = function(){
 			that.context.drawImage(img1,0,0,img1.width,img1.height,0,0,that._w,that._h);
-			that.context.globalCompositeOperation = "destination-out";
+			that.context.globalCompositeOperation = 'destination-out';
+			//自定义文字
+			that.context.font = '24px "微软雅黑"';
+			that.context.fillText(that.wipetext, that._w/2 - 64, that._h/2 + 4);
 		};
+		
 	}
 };
 //drawT画点和画线函数
@@ -46,7 +50,7 @@ Wipe.prototype.drawMask=function(){
 //如果只有两个参数,函数功能画圆,moveX,moveY即是圆的中心坐标
 //如果传递四个参数,函数功能画线,moveX,moveY作为开始坐标,x2,y2为结束坐标
 Wipe.prototype.drawT = function(moveX,moveY,x2,y2){
-	console.log("传递的实参个数"+arguments.length);
+	// console.log("传递的实参个数"+arguments.length);
 	if(arguments.length === 2){
 		//画点
 		this.context.save();
@@ -64,7 +68,7 @@ Wipe.prototype.drawT = function(moveX,moveY,x2,y2){
 		this.context.moveTo(moveX,moveY);
 		this.context.lineTo(x2,y2);
 		this.context.stroke();
-		this.context.restore();
+		this.context.restore();	
 	}else{
 		return false;
 	}
@@ -100,7 +104,7 @@ Wipe.prototype.addEvent = function(){
 	this.cas.addEventListener(clickEvtName,function(evt){
 	var sTop = document.documentElement.scrollTop || document.body.scrollTop;
 	var sLeft = document.documentElement.scrollLeft || document.body.scrollLeft;
-		console.log("ok");
+		// console.log("ok");
 		that.isMouseDown = true;
 		var event = evt || window.event;
 		//获取鼠标咋视口的坐标，传递参数打drawPoint
@@ -128,33 +132,32 @@ Wipe.prototype.addEvent = function(){
 	this.cas.addEventListener(endEvtName,function(evt){
 		//还原isMouseDown 为false
 		that.isMouseDown = false;
-		console.log( that.transpercent );
-		var percent = that.getTransparencyPercent();
+		// console.log( that.transpercent );
+		var percent = setTimeout(function(){that.getTransparencyPercent();},1000);
+		console.log(that.getTransparencyPercent());
 		//调用同名的全局函数
 		that.callback.call(null,percent);
 		if( that.getTransparencyPercent() > that.transpercent){
 			alert("超过了"+ that.transpercent +"%的面积");
-			//drawMask(context);
 			that.clearRect();
 		}	
 	},false);
 };
 // 封装一个getAllLeft()函数,找到元素所有水平方向的偏移
-	function getAllLeft(element){
-		var allLeft = 0;
-		while(element){
-			allLeft += element.offsetLeft;
-			element = element.offsetParent;
-		}
-		return allLeft;
+function getAllLeft(element){
+	var allLeft = 0;
+	while(element){
+		allLeft += element.offsetLeft;
+		element = element.offsetParent;
 	}
-	function getAllTop(element){
-		var allTop = 0;
-		while(element){
-			allTop += element.offsetTop;
-			element = element.offsetParent;
-		}
-		// console.log(allTop);
-		return allTop;
+	return allLeft;
+}
+function getAllTop(element){
+	var allTop = 0;
+	while(element){
+		allTop += element.offsetTop;
+		element = element.offsetParent;
 	}
-
+	// console.log(allTop);
+	return allTop;
+}

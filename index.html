@@ -15,14 +15,13 @@
 		#cas{
 			border:1px solid red;
 			background: url(src/images/wipe1.jpg) center 0 no-repeat;
-			background-color: cover;
+			background-color: red;
 			position: absolute;
-			left: 200px;
 		}
 	</style>
 </head>
 <body>
-	<canvas id="cas" width="375" height="700"></canvas>
+	<canvas id="cas" width="375" height="700">你的浏览器居然不支持Canvas？！赶快换一个吧！！</canvas>
 </body>
 </html>
 <script src="src/js/wipe.js"></script>
@@ -37,12 +36,14 @@ var wipeConfig = {
 	height:"700",	//canvas高度，必须和canvas标签中高度一致
 	radius:"20",		//涂抹笔的半径
 	transpercent:70, 	//透明面积占整个画布的百分比，超出此数字显示全部画布
-	callback:wipedCallback 	//用户自定义回调函数名称
+	callback:wipedCallback, 	//用户自定义回调函数名称
+	wipetext:"今天天气很好!"	//用户自定义文字
 }
+
 var cas01 = new Wipe(wipeConfig);
 function wipedCallback(percent){
-	if (percent > 50) {
-		console.log("透明面积超过50%，查看地图");
+	if (percent > 70) {
+		console.log("透明面积超过70%，查看地图");
 	}
 }
 </script>

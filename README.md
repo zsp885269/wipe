@@ -45,4 +45,10 @@ var wipeConfig = {
 }
  ```3. 初始化wipe插件,并将上一步的配置作为参数传入例如：``` 
 new Wipe(wipeConfig); ```4. 编写回调函数。用户在涂抹完成的后继操作必须写在此回调函数中。例如：``` 
-function wipedCallback(percent){	if (percent > 50) {		console.log("透明面积超过60%，查看地图");	}} ```
+function wipedCallback(percent){	if (percent > 50) {		console.log("透明面积超过60%，查看地图");	}} ``` ## ver 3.1.0 ##### 2018-11-27 ###1.  修复bug在定位与有滚动条情况下依然何以使用例如：``` // 封装一个getAllLeft()函数,找到元素所有水平方向的偏移function getAllLeft(element){	var allLeft = 0;	while(element){		allLeft += element.offsetLeft;		element = element.offsetParent;	}	return allLeft;}function getAllTop(element){	var allTop = 0;	while(element){		allTop += element.offsetTop;		element = element.offsetParent;	}	// console.log(allTop);	return allTop;} ```2.  添加了蒙版自定义文本编辑配置文件：| 属性 | 取值类型 | 备注 || wipetext | 字符串/数值 | 用户自定义文字 |例如：``` 
+var wipeConfig = {	wipetext:"今天天气很好!"	//用户自定义文字}
+ ``` ``` 
+//自定义文字that.context.font = '24px "微软雅黑"';that.context.fillText(that.wipetext, that._w/2 - 64, that._h/2 + 4);
+ ```3.  延时判断透明区域百分比例如：``` 
+var percent = setTimeout(function(){that.getTransparencyPercent();},1000);	console.log(that.getTransparencyPercent());	//调用同名的全局函数	that.callback.call(null,percent);	if( that.getTransparencyPercent() > that.transpercent){		alert("超过了"+ that.transpercent +"%的面积");		that.clearRect();	}
+ ```
