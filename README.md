@@ -18,8 +18,9 @@ PC端实现涂抹擦效果，超过50%的涂抹面积可以查看全部，涂抹
 ``` 
 <canvas id="cas" width="375" height="700"></canvas> ```
 2. 编辑配置文件：
-属性  			取值类型  		备注 
+
 ``` 
+属性  			取值类型  		备注 
 id  			字符串  		canvas标签的id 
 coverType  		字符串  		取值类型"color" 或 "image" 
 color  			字符串  		十六进制颜色码，或rgba()，如果不指定默认值为#666 
