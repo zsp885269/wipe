@@ -23,13 +23,13 @@ PC端实现涂抹擦效果，超过50%的涂抹面积可以查看全部，涂抹
 id  			字符串  		canvas标签的id 
 coverType  		字符串  		取值类型"color" 或 "image" 
 color  			字符串  		十六进制颜色码，或rgba()，如果不指定默认值为#666 
-imgUrl  			字符串  		前面的覆盖图片 
+imgUrl  		字符串  		前面的覆盖图片 
 backImgUrl  		字符串  		背景图片 
 width  			字符串  		canvas宽度，必须和canvas标签中宽度一致 
-height  			字符串  		canvas高度，必须和canvas标签中高度一致 
-radius  			字符串  		涂抹笔的半径 
+height  		字符串  		canvas高度，必须和canvas标签中高度一致 
+radius  		字符串  		涂抹笔的半径 
 transpercent   		数值 		透明面积占整个画布的百分比，超出此数字显示全部画布 
-callback 			函数 		用户自定义的回调函数名称 
+callback 		函数 		用户自定义的回调函数名称 
  ```
 例如：
 ``` 
